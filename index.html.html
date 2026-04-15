@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GENIE TRUCK — Formulaire de demande</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:wght@600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --black:#111111;
+  --white:#FFFFFF;
+  --gold:#B8860B;
+  --gold-light:#D4A017;
+  --gold-bg:#FDF8EE;
+  --gray-50:#F8F8F7;
+  --gray-100:#EFEFED;
+  --gray-200:#DDDDD9;
+  --gray-400:#9A9A94;
+  --gray-600:#5C5C58;
+  --gray-800:#333330;
+  --green:#1A7A4A;
+  --green-bg:#EDF7F2;
+  --red:#C0392B;
+  --r:8px;
+  --r-lg:14px;
+}
+
+body{
+  font-family:'IBM Plex Sans',sans-serif;
+  background:var(--gray-50);
+  min-height:100vh;
+  color:var(--black);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+/* HEADER */
+header{width:100%;background:#000000;padding:12px 32px;display:flex;align-items:center;justify-content:space-between;}
+
+
+
+.logo-text{font-family:"IBM Plex Serif",serif;font-size:22px;font-weight:600;color:#FFFFFF;letter-spacing:3px;}
+.header-badge{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#D4A017;font-weight:500;}
+
+/* INTRO BANNER */
+.intro{
+  width:100%;
+  background:var(--gold-bg);
+  border-bottom:2px solid var(--gold);
+  padding:18px 32px;
+  text-align:center;
+}
+
+.intro p{
+  font-size:14px;
+  color:var(--gray-600);
+  max-width:600px;
+  margin:0 auto;
+}
+
+.intro strong{color:var(--black)}
+
+/* PROGRESS */
+.progress-wrap{
+  width:100%;
+  max-width:700px;
+  padding:32px 24px 0;
+}
+
+.steps-row{
+  display:flex;
+  align-items:center;
+  margin-bottom:8px;
+}
+
+.sdot{
+  width:28px;height:28px;border-radius:50%;
+  border:1.5px solid var(--gray-200);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:500;color:var(--gray-400);
+  flex-shrink:0;transition:all .25s;
+}
+
+.sdot.active{border-color:var(--gold);color:var(--gold);background:var(--gold-bg)}
+.sdot.done{border-color:var(--green);background:var(--green);color:#fff;font-size:13px}
+
+.sline{flex:1;height:1.5px;background:var(--gray-200);transition:background .25s}
+.sline.done{background:var(--green)}
+
+.slabels{
+  display:flex;
+  justify-content:space-between;
+  padding:0 0;
+}
+
+.slabel{
+  font-size:11px;
+  color:var(--gray-400);
+  width:28px;
+  text-align:center;
+}
+
+/* CARD */
+.card{
+  width:100%;max-width:700px;
+  background:var(--white);
+  border:1px solid var(--gray-200);
+  border-radius:var(--r-lg);
+  padding:36px;
+  margin:20px 16px 48px;
+}
+
+.card-head{margin-bottom:28px}
+
+.card-title{
+  font-family:'IBM Plex Serif',serif;
+  font-size:22px;font-weight:600;
+  color:var(--black);margin-bottom:4px;
+}
+
+.card-sub{font-size:13px;color:var(--gray-400)}
+
+/* SECTION LABEL */
+.slbl{
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  font-weight:600;color:var(--gold);
+  margin-bottom:14px;
+}
+
+/* GRID */
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.row.full{grid-template-columns:1fr}
+@media(max-width:540px){.row{grid-template-columns:1fr}}
+
+/* FIELD */
+.field{display:flex;flex-direction:column;gap:5px}
+
+label.lbl{
+  font-size:12px;font-weight:500;
+  color:var(--gray-600);letter-spacing:.2px;
+}
+
+label.lbl .req{color:var(--gold)}
+
+input,select,textarea{
+  width:100%;
+  background:var(--gray-50);
+  border:1px solid var(--gray-200);
+  border-radius:var(--r);
+  padding:10px 13px;
+  font-family:'IBM Plex Sans',sans-serif;
+  font-size:14px;color:var(--black);
+  outline:none;
+  transition:border-color .2s,background .2s;
+  -webkit-appearance:none;
+}
+
+input::placeholder,textarea::placeholder{color:var(--gray-400)}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);background:#fff}
+textarea{min-height:90px;resize:vertical;line-height:1.6}
+select option{background:#fff}
+
+/* PILLS */
+.pills{display:flex;flex-wrap:wrap;gap:7px}
+.pi{display:none}
+.pl{
+  padding:7px 13px;border-radius:20px;
+  border:1.5px solid var(--gray-200);
+  font-size:13px;color:var(--gray-600);
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.pi:checked+.pl{border-color:var(--gold);color:var(--black);background:var(--gold-bg);font-weight:500}
+.pl:hover{border-color:var(--gold-light)}
+
+/* FILE UPLOAD */
+.upload-zone{
+  border:2px dashed var(--gray-200);
+  border-radius:var(--r);
+  padding:24px 16px;
+  text-align:center;
+  cursor:pointer;
+  transition:border-color .2s,background .2s;
+  background:var(--gray-50);
+  position:relative;
+}
+
+.upload-zone:hover,.upload-zone.drag{
+  border-color:var(--gold);
+  background:var(--gold-bg);
+}
+
+.upload-zone input[type=file]{
+  position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;
+}
+
+.upload-icon{font-size:28px;margin-bottom:8px}
+
+.upload-text{font-size:13px;color:var(--gray-600);line-height:1.5}
+.upload-text strong{color:var(--black)}
+.upload-text small{font-size:11px;color:var(--gray-400)}
+
+.file-selected{
+  display:none;
+  align-items:center;gap:10px;
+  background:var(--green-bg);
+  border:1px solid #B2DFC7;
+  border-radius:var(--r);
+  padding:10px 14px;
+  font-size:13px;color:var(--green);
+  margin-top:8px;
+}
+
+.file-selected .fname{font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1}
+.file-selected .fsize{font-size:11px;color:var(--gray-400);flex-shrink:0}
+.remove-file{cursor:pointer;color:var(--gray-400);flex-shrink:0;font-size:16px;line-height:1}
+.remove-file:hover{color:var(--red)}
+
+/* SEPARATOR */
+.sep{height:1px;background:var(--gray-100);margin:24px 0}
+
+/* ERRORS */
+.ferr{font-size:11px;color:var(--red);display:none;margin-top:3px}
+input.inv,select.inv,textarea.inv{border-color:var(--red)}
+.pills-err{font-size:11px;color:var(--red);display:none;margin-top:6px}
+
+/* BUTTONS */
+.btn-row{display:flex;justify-content:space-between;align-items:center;margin-top:28px;gap:12px}
+
+.btn{
+  padding:12px 28px;border-radius:var(--r);
+  font-family:'IBM Plex Sans',sans-serif;
+  font-size:14px;font-weight:500;
+  cursor:pointer;transition:all .18s;border:none;
+}
+
+.btn-primary{background:var(--black);color:var(--white);flex:1;max-width:260px}
+.btn-primary:hover{background:var(--gray-800);transform:translateY(-1px)}
+.btn-primary:active{transform:translateY(0)}
+.btn-primary:disabled{opacity:.45;cursor:not-allowed;transform:none}
+
+.btn-outline{
+  background:transparent;color:var(--gray-600);
+  border:1.5px solid var(--gray-200);
+}
+.btn-outline:hover{border-color:var(--gray-400);color:var(--black)}
+
+/* STEPS */
+.step{display:none}
+.step.active{display:block}
+
+/* SUCCESS */
+.success{text-align:center;padding:12px 0}
+
+.s-icon{
+  width:64px;height:64px;border-radius:50%;
+  background:var(--green-bg);border:2px solid var(--green);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 20px;
+}
+
+.s-icon svg{width:30px;height:30px;stroke:var(--green);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+.s-title{font-family:'IBM Plex Serif',serif;font-size:22px;font-weight:600;margin-bottom:10px}
+.s-text{font-size:14px;color:var(--gray-600);line-height:1.7;max-width:420px;margin:0 auto 24px}
+
+.recap{
+  background:var(--gray-50);
+  border:1px solid var(--gray-200);
+  border-radius:var(--r);
+  padding:16px 18px;text-align:left;margin-bottom:20px;
+}
+
+.recap-title{font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:600;color:var(--gold);margin-bottom:12px}
+
+.recap-row{display:flex;justify-content:space-between;padding:4px 0;font-size:13px;border-bottom:1px solid var(--gray-100)}
+.recap-row:last-child{border:none}
+.recap-row .rk{color:var(--gray-400)}
+.recap-row .rv{font-weight:500;text-align:right;max-width:60%}
+
+.wa-btn{
+  display:inline-flex;align-items:center;gap:9px;
+  background:#25D366;color:#fff;
+  padding:12px 22px;border-radius:var(--r);
+  font-size:14px;font-weight:500;
+  text-decoration:none;border:none;cursor:pointer;
+  font-family:'IBM Plex Sans',sans-serif;
+  transition:all .18s;
+}
+.wa-btn:hover{background:#1ebe5b;transform:translateY(-1px)}
+
+/* SPINNER */
+.spin{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .6s linear infinite;display:inline-block}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* FOOTER */
+footer{
+  font-size:11px;color:var(--gray-400);
+  text-align:center;padding:16px 24px;
+  border-top:1px solid var(--gray-200);
+  width:100%;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-text">GENIE TRUCK</div>
+  <div class="header-badge">Formulaire de demande</div>
+</header>
+
+<div class="intro">
+  <p><strong>Remplissez ce formulaire en 2 minutes.</strong> Notre équipe analyse votre demande et vous recontacte sous 24h avec des propositions de véhicules adaptées à votre budget.</p>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="steps-row">
+    <div class="sdot active" id="d1">1</div>
+    <div class="sline" id="l1"></div>
+    <div class="sdot" id="d2">2</div>
+    <div class="sline" id="l2"></div>
+    <div class="sdot" id="d3">✓</div>
+  </div>
+  <div class="slabels">
+    <div class="slabel">Société</div>
+    <div class="slabel">Demande</div>
+    <div class="slabel">Envoi</div>
+  </div>
+</div>
+
+<div class="card">
+
+  <!-- ─── ÉTAPE 1 ─── -->
+  <div class="step active" id="s1">
+    <div class="card-head">
+      <div class="card-title">Votre entreprise</div>
+      <div class="card-sub">Identité légale et coordonnées du responsable</div>
+    </div>
+
+    <div class="slbl">Identité légale</div>
+
+    <div class="row">
+      <div class="field">
+        <label class="lbl">Raison sociale <span class="req">*</span></label>
+        <input type="text" id="societe" placeholder="Ex : Transport Atlas SARL">
+        <div class="ferr" id="e-societe">Champ requis</div>
+      </div>
+      <div class="field">
+        <label class="lbl">Ville / Région au Maroc</label>
+        <input type="text" id="ville" placeholder="Ex : Casablanca, Tanger…">
+      </div>
+    </div>
+
+    <div class="row full">
+      <div class="field">
+        <label class="lbl">Registre de Commerce — joindre le PDF <span class="req">*</span></label>
+        <div class="upload-zone" id="upload-zone">
+          <input type="file" id="rc-file" accept=".pdf,application/pdf">
+          <div class="upload-icon">📄</div>
+          <div class="upload-text">
+            <strong>Glissez votre RC ici</strong> ou cliquez pour parcourir<br>
+            <small>Fichier PDF uniquement · Max 5 Mo</small>
+          </div>
+        </div>
+        <div class="file-selected" id="file-info">
+          <span style="color:var(--green);font-size:18px">✓</span>
+          <span class="fname" id="fname"></span>
+          <span class="fsize" id="fsize"></span>
+          <span class="remove-file" onclick="removeFile()">✕</span>
+        </div>
+        <div class="ferr" id="e-rc">Veuillez joindre votre registre de commerce</div>
+      </div>
+    </div>
+
+    <div class="sep"></div>
+    <div class="slbl">Contact responsable</div>
+
+    <div class="row">
+      <div class="field">
+        <label class="lbl">Nom & Prénom <span class="req">*</span></label>
+        <input type="text" id="contact" placeholder="Ex : Mohamed Alami">
+        <div class="ferr" id="e-contact">Champ requis</div>
+      </div>
+      <div class="field">
+        <label class="lbl">Téléphone / WhatsApp <span class="req">*</span></label>
+        <input type="tel" id="telephone" placeholder="Ex : +212 6XX XXX XXX">
+        <div class="ferr" id="e-tel">Champ requis</div>
+      </div>
+    </div>
+
+    <div class="row full">
+      <div class="field">
+        <label class="lbl">Email professionnel <span class="req">*</span></label>
+        <input type="email" id="email" placeholder="Ex : contact@transport-atlas.ma">
+        <div class="ferr" id="e-email">Adresse email invalide</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <div></div>
+      <button class="btn btn-primary" onclick="step2()">Continuer →</button>
+    </div>
+  </div>
+
+  <!-- ─── ÉTAPE 2 ─── -->
+  <div class="step" id="s2">
+    <div class="card-head">
+      <div class="card-title">Votre recherche</div>
+      <div class="card-sub">Décrivez le ou les véhicules que vous recherchez</div>
+    </div>
+
+    <div class="slbl">Type de véhicule <span style="color:var(--red);font-size:10px">*</span></div>
+    <div class="pills" id="type-pills" style="margin-bottom:6px">
+      <input type="radio" name="tv" id="tv1" value="Tracteur PL — Semi" class="pi">
+      <label for="tv1" class="pl">Tracteur PL — Semi</label>
+      <input type="radio" name="tv" id="tv2" value="Porteur PL" class="pi">
+      <label for="tv2" class="pl">Porteur PL</label>
+      <input type="radio" name="tv" id="tv3" value="Semi-remorque" class="pi">
+      <label for="tv3" class="pl">Semi-remorque</label>
+      <input type="radio" name="tv" id="tv4" value="Utilitaire VUL" class="pi">
+      <label for="tv4" class="pl">Utilitaire VUL</label>
+      <input type="radio" name="tv" id="tv5" value="Engin / BTP" class="pi">
+      <label for="tv5" class="pl">Engin / BTP</label>
+      <input type="radio" name="tv" id="tv6" value="Autre" class="pi">
+      <label for="tv6" class="pl">Autre</label>
+    </div>
+    <div class="pills-err" id="e-type">Veuillez sélectionner une catégorie</div>
+
+    <div class="sep"></div>
+
+    <div class="row">
+      <div class="field">
+        <label class="lbl">Marque(s) souhaitée(s)</label>
+        <input type="text" id="marque" placeholder="Ex : Renault, DAF, Mercedes…">
+      </div>
+      <div class="field">
+        <label class="lbl">Modèle / Motorisation</label>
+        <input type="text" id="modele" placeholder="Ex : T 460, XF 106 460…">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label class="lbl">Norme Euro</label>
+        <div class="pills" style="margin-top:4px">
+          <input type="radio" name="euro" id="e5" value="Euro 5" class="pi">
+          <label for="e5" class="pl">Euro 5</label>
+          <input type="radio" name="euro" id="e6" value="Euro 6" class="pi">
+          <label for="e6" class="pl">Euro 6</label>
+          <input type="radio" name="euro" id="ei" value="Indifférent" class="pi" checked>
+          <label for="ei" class="pl">Indifférent</label>
+        </div>
+      </div>
+      <div class="field">
+        <label class="lbl">Délai souhaité</label>
+        <select id="delai">
+          <option value="">Sélectionner…</option>
+          <option value="Immédiat">Immédiat (dès que possible)</option>
+          <option value="Dans le mois">Dans le mois</option>
+          <option value="2 à 3 mois">2 à 3 mois</option>
+          <option value="Flexible">Flexible</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="sep"></div>
+    <div class="slbl">Budget & Quantité</div>
+
+    <div class="row full">
+      <div class="field">
+        <label class="lbl">Tranche de budget par unité <span class="req">*</span></label>
+        <div class="pills" id="budget-pills" style="margin-top:4px">
+          <input type="radio" name="budget" id="b1" value="Moins de 10 000 €" class="pi">
+          <label for="b1" class="pl">– de 10 000 €</label>
+          <input type="radio" name="budget" id="b2" value="10 000 – 20 000 €" class="pi">
+          <label for="b2" class="pl">10 – 20 000 €</label>
+          <input type="radio" name="budget" id="b3" value="20 000 – 35 000 €" class="pi">
+          <label for="b3" class="pl">20 – 35 000 €</label>
+          <input type="radio" name="budget" id="b4" value="35 000 – 55 000 €" class="pi">
+          <label for="b4" class="pl">35 – 55 000 €</label>
+          <input type="radio" name="budget" id="b5" value="55 000 – 80 000 €" class="pi">
+          <label for="b5" class="pl">55 – 80 000 €</label>
+          <input type="radio" name="budget" id="b6" value="Plus de 80 000 €" class="pi">
+          <label for="b6" class="pl">+ de 80 000 €</label>
+        </div>
+        <div class="pills-err" id="e-budget">Veuillez sélectionner une tranche de budget</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label class="lbl">Nombre de véhicules <span class="req">*</span></label>
+        <input type="number" id="quantite" min="1" max="99" placeholder="Ex : 2">
+        <div class="ferr" id="e-qte">Champ requis (min. 1)</div>
+      </div>
+      <div class="field">
+        <label class="lbl">Année minimum</label>
+        <input type="number" id="annee" min="2010" max="2025" placeholder="Ex : 2018">
+      </div>
+    </div>
+
+    <div class="row full">
+      <div class="field">
+        <label class="lbl">Précisions / Commentaires</label>
+        <textarea id="commentaires" placeholder="Options souhaitées, historique, conditions de paiement, questions spécifiques…"></textarea>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-outline" onclick="step1()">← Retour</button>
+      <button class="btn btn-primary" id="sub-btn" onclick="submit()">Envoyer ma demande</button>
+    </div>
+  </div>
+
+  <!-- ─── CONFIRMATION ─── -->
+  <div class="step" id="s3">
+    <div class="success">
+      <div class="s-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+      <div class="s-title">Demande bien reçue !</div>
+      <div class="s-text">L'équipe GENIE TRUCK va analyser votre dossier et vous recontactera sous 24h par WhatsApp ou email avec des propositions adaptées.</div>
+      <div class="recap" id="recap"><div class="recap-title">Récapitulatif</div><div id="recap-rows"></div></div>
+      <a class="wa-btn" id="wa-link" href="#" target="_blank">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Confirmer via WhatsApp
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<footer>GENIE IMMO — GENIE TRUCK · RCS Paris 944 406 131 · 58 rue de Monceau, 75008 Paris</footer>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw574MVfO1v2WxjVk_TooVDsORxxtJ0KF-cw1K5xvtxjSMtjQiHZAb7j--SgRxn0Jjq_A/exec";
+const WA_NUMBER  = "33XXXXXXXXX"; // Ex: 33612345678
+
+let pdfB64 = null, pdfName = null;
+
+// ── UPLOAD PDF ──
+const zone = document.getElementById('upload-zone');
+const fileInput = document.getElementById('rc-file');
+
+zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag'); });
+zone.addEventListener('dragleave', () => zone.classList.remove('drag'));
+zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('drag'); handleFile(e.dataTransfer.files[0]); });
+fileInput.addEventListener('change', () => handleFile(fileInput.files[0]));
+
+function handleFile(file) {
+  if (!file) return;
+  if (file.type !== 'application/pdf') { alert('Uniquement les fichiers PDF sont acceptés.'); return; }
+  if (file.size > 5 * 1024 * 1024) { alert('Le fichier dépasse 5 Mo.'); return; }
+  pdfName = file.name;
+  const fi = document.getElementById('file-info');
+  document.getElementById('fname').textContent = file.name;
+  document.getElementById('fsize').textContent = (file.size / 1024).toFixed(0) + ' Ko';
+  fi.style.display = 'flex';
+  document.getElementById('e-rc').style.display = 'none';
+  const reader = new FileReader();
+  reader.onload = e => { pdfB64 = e.target.result.split(',')[1]; };
+  reader.readAsDataURL(file);
+}
+
+function removeFile() {
+  pdfB64 = null; pdfName = null;
+  fileInput.value = '';
+  document.getElementById('file-info').style.display = 'none';
+}
+
+// ── PROGRESS ──
+function setProgress(n) {
+  [1,2,3].forEach(i => {
+    const d = document.getElementById('d'+i);
+    d.classList.remove('active','done');
+    if (i < n) { d.classList.add('done'); d.textContent = '✓'; }
+    else if (i === n) { d.classList.add('active'); d.textContent = i; }
+    else { d.textContent = i; }
+  });
+  [1,2].forEach(i => document.getElementById('l'+i).classList.toggle('done', i < n));
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── VALIDATION ──
+function v1() {
+  let ok = true;
+  const checks = [
+    ['societe', 'e-societe', v => v.length > 1],
+    ['contact', 'e-contact', v => v.length > 2],
+    ['telephone', 'e-tel', v => v.length > 6],
+    ['email', 'e-email', v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)],
+  ];
+  checks.forEach(([id, err, fn]) => {
+    const el = document.getElementById(id);
+    const valid = fn(el.value.trim());
+    el.classList.toggle('inv', !valid);
+    document.getElementById(err).style.display = valid ? 'none' : 'block';
+    if (!valid) ok = false;
+  });
+  // RC file
+  const rcOk = pdfB64 !== null;
+  document.getElementById('e-rc').style.display = rcOk ? 'none' : 'block';
+  if (!rcOk) ok = false;
+  return ok;
+}
+
+function v2() {
+  let ok = true;
+  const type = document.querySelector('input[name="tv"]:checked');
+  document.getElementById('e-type').style.display = type ? 'none' : 'block';
+  if (!type) ok = false;
+  const budget = document.querySelector('input[name="budget"]:checked');
+  document.getElementById('e-budget').style.display = budget ? 'none' : 'block';
+  if (!budget) ok = false;
+  const qte = document.getElementById('quantite');
+  const qOk = qte.value && parseInt(qte.value) >= 1;
+  qte.classList.toggle('inv', !qOk);
+  document.getElementById('e-qte').style.display = qOk ? 'none' : 'block';
+  if (!qOk) ok = false;
+  return ok;
+}
+
+function step1() { setProgress(1); }
+function step2() { if (v1()) setProgress(2); }
+
+// ── COLLECT ──
+function collect() {
+  return {
+    societe: document.getElementById('societe').value.trim(),
+    ville: document.getElementById('ville').value.trim(),
+    contact: document.getElementById('contact').value.trim(),
+    telephone: document.getElementById('telephone').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    rc_filename: pdfName || '',
+    rc_pdf: pdfB64 || '',
+    type_vehicule: (document.querySelector('input[name="tv"]:checked')||{}).value || '',
+    marque: document.getElementById('marque').value.trim(),
+    modele: document.getElementById('modele').value.trim(),
+    norme_euro: (document.querySelector('input[name="euro"]:checked')||{}).value || '',
+    delai: document.getElementById('delai').value,
+    budget: (document.querySelector('input[name="budget"]:checked')||{}).value || '',
+    quantite: document.getElementById('quantite').value,
+    annee: document.getElementById('annee').value,
+    commentaires: document.getElementById('commentaires').value.trim(),
+  };
+}
+
+// ── SUBMIT ──
+async function submit() {
+  if (!v2()) return;
+  const btn = document.getElementById('sub-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin"></span>&nbsp;Envoi…';
+  const d = collect();
+  try {
+    if (SCRIPT_URL !== "COLLE_TON_URL_ICI") {
+      await fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/json'}, body: JSON.stringify(d) });
+    }
+  } catch(e) {}
+  showSuccess(d);
+}
+
+// ── SUCCESS ──
+function showSuccess(d) {
+  setProgress(3);
+  const rows = [
+    ['Société', d.societe],
+    ['Contact', d.contact],
+    ['Recherche', d.type_vehicule],
+    ['Quantité', d.quantite + ' véhicule(s)'],
+    ['Budget/unité', d.budget],
+    d.marque ? ['Marque', d.marque + (d.modele?' '+d.modele:'')] : null,
+    d.delai ? ['Délai', d.delai] : null,
+  ].filter(Boolean);
+  document.getElementById('recap-rows').innerHTML = rows.map(([k,v]) =>
+    `<div class="recap-row"><span class="rk">${k}</span><span class="rv">${v}</span></div>`
+  ).join('');
+  const msg = encodeURIComponent(
+    `Bonjour GENIE TRUCK,\n\nJe viens de soumettre ma demande via votre formulaire.\n\nSociété : ${d.societe}\nContact : ${d.contact}\nRecherche : ${d.quantite}x ${d.type_vehicule}\nBudget/unité : ${d.budget}\n\nMerci de me recontacter.`
+  );
+  document.getElementById('wa-link').href = `https://wa.me/${WA_NUMBER}?text=${msg}`;
+}
+</script>
+
+</body>
+</html>
